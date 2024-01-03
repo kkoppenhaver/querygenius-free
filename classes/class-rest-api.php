@@ -102,7 +102,50 @@ class Rest_Api {
 			'prefix' => $prefix
 		];
 
-        //TO-DO: Prompt generation via OpenAI API call goes here  
+
+        $prompt_data = [
+            'model' => 'gpt-3.5-turbo',
+            'temperature' => 0.7,
+            'messages' => [
+                [
+                    'role'    => 'system',
+                    'content' => "You are a database administrator who is very familiar with writing performant queries against a SQL database containing WordPress data."
+                ],
+                [
+                    'role'    => 'user',
+                    'content' => "Given the provided database schema (formatted in JSON) and the provided list of registered post types for this WordPress site (formatted in JSON with the slug of the post type first, and then the name), write a SQL query that would answer the provided question for a WordPress database. Return just the SQL query with no additional explanation.
+                        
+                        If the question asks about a specific post type, prefer the post types provided as Registered post types. For example, if a custom post type exists on this site with the name of Gallery and a slug of gallery and a user asks for the most recent gallery post, the resulting SQL query should enforce WHERE 'post_type' = 'gallery'.
+	            		
+	            		If the question mentions a specific post type, use the slug from the provided list of registered post types that matches the name.
+
+	            		If the provided database schema doesn't have columns that match the values asked, use the lists post meta and user meta keys to identify a potential meta key match to include in the query.
+	            		
+	            		If no post status is provided, assume that post_status = publish.
+	            		
+	            		Your output should be a single string containing the SQL query.
+	            		
+	            		For example {'query' : 'SELECT * FROM wp_posts WHERE post_type = 'post' AND post_status = 'publish'', 'suggestions' : 'Specify a post type'}
+	            		Database schema: {$schema}
+	            		Registered post types: {$registered_post_types}	
+	            		Post meta: {$post_meta}
+	            		User meta: {$user_meta}
+	            		Question: {$question}"
+                ],
+            ],
+        ];
+
+        $response = wp_remote_post( 'https://api.openai.com/v1/chat/completions', [
+            'timeout'     => 30,
+            'body'        => json_encode( $prompt_data ),
+            'headers'     => [
+                'Authorization' => "Bearer $open_ai_api_key",
+                'Content-Type'  => 'application/json'
+            ],
+        ] );
+
+        $body = json_decode( wp_remote_retrieve_body( $response ) );
+        $query = $body->choices[0]->message->content;
 
         do_action( 'querygenius_query_created', $question, $query );
 

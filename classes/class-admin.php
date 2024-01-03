@@ -33,7 +33,7 @@ class Admin {
 	        return;
 	    }
 
-	    wp_enqueue_script('querygenius', QUERYGENIUS_URL . 'assets/askwp.js', ['jquery'], QUERYGENIUS_VERSION, true);
+	    wp_enqueue_script('querygenius', QUERYGENIUS_URL . 'assets/querygenius.js', ['jquery'], QUERYGENIUS_VERSION, true);
 	    wp_localize_script('querygenius', 'wpApi', [
 	        'root' => esc_url_raw( rest_url() ),
 	        'nonce' => wp_create_nonce( 'wp_rest' )

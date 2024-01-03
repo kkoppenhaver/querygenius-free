@@ -111,8 +111,7 @@
 				    data: dataSet,
                     buttons: [
                        { extend: 'csv', text: 'Download as CSV' },
-                       { extend: 'excel', text: 'Download as Excel (xlsx)' },
-                       { extend: 'pdf', text: 'Download as PDF' }
+                       { extend: 'excel', text: 'Download as Excel (xlsx)' }
                     ]
 				});
 
