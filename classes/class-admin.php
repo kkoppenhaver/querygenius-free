@@ -20,11 +20,26 @@ class Admin {
 	        [ $this, 'querygenius_main_page' ],   // Function to display the page
 	        'dashicons-editor-help'  // Icon URL (using dashicon class)
 	    );
+
+	    add_submenu_page(
+		    'querygenius', // Add our page under the "Tools" menu
+		    'Settings', // Title in menu
+		    'Settings', // Page title
+		    'manage_options', // permissions
+		    'settings', // slug for our page
+		    [ $this, 'querygenius_settings'] // Callback to render the page
+		  );
 	}
 
 	public function querygenius_main_page() {
 		ob_start();
 		require(QUERYGENIUS_PATH . 'templates/admin-page.php');
+		echo ob_get_clean();
+	}
+
+	public function querygenius_settings() {
+		ob_start();
+		require(QUERYGENIUS_PATH . 'templates/settings.php');
 		echo ob_get_clean();
 	}
 
