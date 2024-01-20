@@ -102,7 +102,6 @@ class Rest_Api {
 			'prefix' => $prefix
 		];
 
-
         $prompt_data = [
             'model' => 'gpt-3.5-turbo',
             'temperature' => 0.7,
@@ -143,6 +142,7 @@ class Rest_Api {
                 'Content-Type'  => 'application/json'
             ],
         ] );
+
 
         $body = json_decode( wp_remote_retrieve_body( $response ) );
         $query = $body->choices[0]->message->content;
