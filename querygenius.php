@@ -35,6 +35,8 @@ define( 'QUERYGENIUS_API_BASE', 'https://querygenius.ai/wp-json/querygenius/v1')
  */
 require plugin_dir_path( __FILE__ ) . 'classes/class-admin.php';
 require plugin_dir_path( __FILE__ ) . 'classes/class-rest-api.php';
+require plugin_dir_path( __FILE__ ) . 'classes/class-utilities.php';
 
 new Admin();
 new Rest_Api();
+new Utilities();
